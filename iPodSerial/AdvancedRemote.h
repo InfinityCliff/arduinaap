@@ -28,9 +28,8 @@
 #include <WProgram.h>
 #include "iPodSerial.h"
 
-class AdvancedRemote : public iPodSerial
-{
-public: // enums
+class AdvancedRemote : public iPodSerial {
+public: // type definitions
     enum ItemType
     {
         ITEM_PLAYLIST = 0x01,
@@ -93,6 +92,27 @@ public: // enums
         FEEDBACK_SENT_RESPONSE = 0x05
     };
 
+    class AdvancedRemoteListener {
+    public:
+        virtual void handleFeedback(AdvancedRemote::Feedback feedback, byte cmd) = 0;
+        virtual void handleIPodName(const char *ipodName) = 0;
+        virtual void handleItemCount(unsigned long count) = 0;
+        virtual void handleItemName(unsigned long offet, const char *itemName) = 0;
+        virtual void handleTimeAndStatus(unsigned long trackLengthInMilliseconds,
+                                         unsigned long elapsedTimeInMilliseconds,
+                                         AdvancedRemote::PlaybackStatus status) = 0;
+        virtual void handlePlaylistPosition(unsigned long playlistPosition) = 0;
+        virtual void handleTitle(const char *title) = 0;
+        virtual void handleArtist(const char *artist) = 0;
+        virtual void handleAlbum(const char *album) = 0;
+        virtual void handlePolling(AdvancedRemote::PollingCommand command,
+                                   unsigned long playlistPositionOrelapsedTimeMs) = 0;
+        virtual void handleShuffleMode(ShuffleMode mode) = 0;
+        virtual void handleRepeatMode(RepeatMode mode) = 0;
+        virtual void handleCurrentPlaylistSongCount(unsigned long count) = 0;
+    
+    };
+
     // the internal command types; only useful if you're implementing the Feedback handler
     static const byte CMD_GET_IPOD_NAME = 0x14;
     static const byte CMD_SWITCH_TO_MAIN_LIBRARY_PLAYLIST = 0x16;
@@ -114,7 +134,6 @@ public: // enums
     static const byte CMD_GET_SONG_COUNT_IN_CURRENT_PLAYLIST = 0x35;
     static const byte CMD_JUMP_TO_SONG_IN_CURRENT_PLAYLIST = 0x37;
 
-public: // handler definitions
     typedef void FeedbackHandler_t(Feedback feedback, byte cmd);
     typedef void iPodNameHandler_t(const char *ipodName);
     typedef void ItemCountHandler_t(unsigned long count);
@@ -134,6 +153,7 @@ public: // handler definitions
 
 
 public: // handler setting methods; you probably want to call these from init()
+    void setListener(AdvancedRemoteListener *newListener);
     void setFeedbackHandler(FeedbackHandler_t newHandler);
     void setiPodNameHandler(iPodNameHandler_t newHandler);
     void setItemCountHandler(ItemCountHandler_t newHandler);
@@ -337,6 +357,7 @@ private: // attributes
     static const byte RESPONSE_BAD = 0x00;
     static const byte RESPONSE_FEEDBACK = 0x01;
 
+    AdvancedRemoteListener *pListener;
     FeedbackHandler_t *pFeedbackHandler;
     iPodNameHandler_t *piPodNameHandler;
     ItemCountHandler_t *pItemCountHandler;

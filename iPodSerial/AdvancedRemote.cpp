@@ -25,7 +25,8 @@
 #include "AdvancedRemote.h"
 
 AdvancedRemote::AdvancedRemote()
-    : pFeedbackHandler(0),
+    : pListener(0),
+      pFeedbackHandler(0),
       piPodNameHandler(0),
       pItemCountHandler(0),
       pItemNameHandler(0),
@@ -40,6 +41,10 @@ AdvancedRemote::AdvancedRemote()
       pCurrentPlaylistSongCountHandler(0),
       currentlyEnabled(false)
 {
+}
+
+void AdvancedRemote::setListener(AdvancedRemoteListener *newListener) {
+    pListener = newListener;
 }
 
 void AdvancedRemote::setFeedbackHandler(FeedbackHandler_t newHandler)
@@ -341,10 +346,14 @@ void AdvancedRemote::processData()
             pDebugPrint->println(dataBuffer[5], HEX);
         }
 #endif
-        if (pFeedbackHandler)
-        {
+        if (pListener || pFeedbackHandler) {
             const Feedback feedback = (Feedback) dataBuffer[3];
+            
+            if (pListener) {
+                pListener->handleFeedback(feedback, dataBuffer[5]);
+            } else {
             pFeedbackHandler(feedback, dataBuffer[5]);
+        }
         }
         return;
     }
@@ -358,95 +367,114 @@ void AdvancedRemote::processData()
     switch (commandThisIsAResponseFor)
     {
     case CMD_GET_IPOD_NAME:
-        if (piPodNameHandler)
-        {
+        if (pListener) {
+            pListener->handleIPodName((const char *) pData);
+        } else if (piPodNameHandler) {
             piPodNameHandler((const char *) pData);
         }
         break;
 
     case CMD_GET_ITEM_COUNT:
-        if (pItemCountHandler)
-        {
+        if (pListener) {
+            pListener->handleItemCount(endianConvert(pData));
+        } else if (pItemCountHandler) {
             pItemCountHandler(endianConvert(pData));
         }
         break;
 
     case CMD_GET_ITEM_NAMES:
-        if (pItemNameHandler)
-        {
+        if (pListener || pItemNameHandler) {
             const unsigned long itemOffset = endianConvert(pData);
             const char *itemName = (const char *) (pData + 4);
+            
+            if (pListener) {
+                pListener->handleItemName(itemOffset, itemName);
+            } else {
             pItemNameHandler(itemOffset, itemName);
+        }
         }
         break;
 
     case CMD_GET_TIME_AND_STATUS_INFO:
-        if (pTimeAndStatusHandler)
-        {
+        if (pListener || pTimeAndStatusHandler) {
             const unsigned long trackLength = endianConvert(pData);
             const unsigned long elapsedTime = endianConvert(pData + 4);
             PlaybackStatus playbackStatus = (PlaybackStatus) *(pData + 8);
 
+            if (pListener) {
+                pListener->handleTimeAndStatus(trackLength, elapsedTime, playbackStatus);
+            } else {
             pTimeAndStatusHandler(trackLength, elapsedTime, playbackStatus);
-
+            }
         }
         break;
 
     case CMD_GET_PLAYLIST_POSITION:
-        if (pPlaylistPositionHandler)
-        {
+        if (pListener) {
+            pListener->handlePlaylistPosition(endianConvert(pData));
+        } else if (pPlaylistPositionHandler) {
             pPlaylistPositionHandler(endianConvert(pData));
         }
         break;
 
     case CMD_GET_TITLE:
-        if (pTitleHandler)
-        {
+        if (pListener) {
+            pListener->handleTitle((const char *) pData);
+        } else if (pTitleHandler) {
             pTitleHandler((const char *) pData);
         }
         break;
 
 
     case CMD_GET_ARTIST:
-        if (pArtistHandler)
-        {
+        if (pListener) {
+            pListener->handleArtist((const char *) pData);
+        } else if (pArtistHandler) {
             pArtistHandler((const char *) pData);
         }
         break;
 
     case CMD_GET_ALBUM:
-        if (pAlbumHandler)
-        {
+        if (pListener) {
+            pListener->handleAlbum((const char *) pData);
+        } else if (pAlbumHandler) {
             pAlbumHandler((const char *) pData);
         }
         break;
 
     case CMD_POLLING_MODE:
-        if (pPollingHandler)
-        {
+        if (pListener || pPollingHandler) {
             const PollingCommand command = (PollingCommand) pData[0];
             const unsigned long number = endianConvert(pData + 1);
+            
+            if (pListener) {
+                pListener->handlePolling(command, number);
+            } else {
             pPollingHandler(command, number);
+        }
         }
         break;
 
     case CMD_GET_SHUFFLE_MODE:
-        if (pShuffleModeHandler)
-        {
+        if (pListener) {
+            pListener->handleShuffleMode((ShuffleMode) *pData);
+        } else if (pShuffleModeHandler) {
             pShuffleModeHandler((ShuffleMode) *pData);
         }
         break;
 
     case CMD_GET_REPEAT_MODE:
-        if (pRepeatModeHandler)
-        {
+        if (pListener) {
+            pListener->handleRepeatMode((RepeatMode) *pData);
+        } else if (pRepeatModeHandler) {
             pRepeatModeHandler((RepeatMode) *pData);
         }
         break;
 
     case CMD_GET_SONG_COUNT_IN_CURRENT_PLAYLIST:
-        if (pCurrentPlaylistSongCountHandler)
-        {
+        if (pListener) {
+            pListener->handleCurrentPlaylistSongCount(endianConvert(pData));
+        } else if (pCurrentPlaylistSongCountHandler) {
             pCurrentPlaylistSongCountHandler(endianConvert(pData));
         }
         break;
