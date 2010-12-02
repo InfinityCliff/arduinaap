@@ -25,6 +25,7 @@
 #include "iPodSerial.h"
 #include <ctype.h>
 
+#if defined(IPOD_SERIAL_DEBUG)
 static const char *STATE_NAME[] =
 {
     "Waiting for Header 1",
@@ -33,6 +34,7 @@ static const char *STATE_NAME[] =
     "Waiting for data",
     "Waiting for checksum"
 };
+#endif
 
 iPodSerial::iPodSerial()
     : receiveState(WAITING_FOR_HEADER1),
@@ -48,7 +50,7 @@ iPodSerial::iPodSerial()
 {
 }
 
-void iPodSerial::setSerial(HardwareSerial &newiPodSerial)
+void iPodSerial::setSerial(Stream &newiPodSerial)
 {
     pSerial = &newiPodSerial;
 }

@@ -60,7 +60,7 @@ public:
      * Sets the serial port that the library will use to communicate with the iPod.
      * This defaults to "Serial", i.e. the normal serial port.
      */
-    void setSerial(HardwareSerial &newiPodSerial);
+    void setSerial(Stream &newiPodSerial);
 
 #if defined(IPOD_SERIAL_DEBUG)
     /**
@@ -151,7 +151,7 @@ private: // attributes
     byte *pData;
     byte checksum;
 
-    HardwareSerial *pSerial;
+    Stream *pSerial;
 
 private: // methods
     void sendHeader();
