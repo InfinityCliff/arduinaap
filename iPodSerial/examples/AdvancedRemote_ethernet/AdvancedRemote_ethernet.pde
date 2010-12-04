@@ -369,6 +369,9 @@ void clientLoop()
 
 void setup()
 {
+  // set the required baud rate for the iPod
+  Serial.begin(iPodSerial::IPOD_SERIAL_RATE);
+  
   Ethernet.begin(MAC_ADDRESS, IP_ADDRESS);
   server.begin();
 
@@ -390,9 +393,6 @@ void setup()
    ar.setLogPrint(clientPrint);
    ar.setDebugPrint(clientPrint);
    */
-
-  // let the library set itself up, now we've done our configuration of it
-  ar.setup();
 
   // start in simple remote mode
   ar.disable();

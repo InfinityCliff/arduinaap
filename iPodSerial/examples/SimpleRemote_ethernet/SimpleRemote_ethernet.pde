@@ -174,8 +174,8 @@ void setup()
   Ethernet.begin(MAC_ADDRESS, IP_ADDRESS);
   server.begin();
 
-  // let the library set itself up, now we've done our configuration of it
-  sr.setup();
+  // set the required baud rate for the iPod
+  Serial.begin(iPodSerial::IPOD_SERIAL_RATE);
 }
 
 void loop()

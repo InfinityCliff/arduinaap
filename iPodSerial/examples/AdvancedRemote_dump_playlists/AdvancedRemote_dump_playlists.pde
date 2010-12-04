@@ -89,6 +89,9 @@ void setup()
   // direct library's debug msgs to the default serial port
   //advancedRemote.setDebugPrint(Serial);
 
+  // set the required baud rate for the iPod
+  Serial3.begin(iPodSerial::IPOD_SERIAL_RATE);
+  
   // use Serial3 (Mega-only) to talk to the iPod
   advancedRemote.setSerial(Serial3);
 
@@ -96,9 +99,6 @@ void setup()
   advancedRemote.setFeedbackHandler(feedbackHandler);
   advancedRemote.setItemCountHandler(itemCountHandler);
   advancedRemote.setItemNameHandler(itemNameHandler);
-
-  // let the library set itself up, now we've done our configuration of it
-  advancedRemote.setup();
 
   // start disabled, i.e. in good old Simple Remote mode
   advancedRemote.disable();

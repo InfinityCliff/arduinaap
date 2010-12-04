@@ -20,7 +20,8 @@ void setup()
   // enable pull-up
   digitalWrite(BUTTON_PIN, HIGH);
 
-  simpleRemote.setup();
+  // set the required baud rate for the iPod
+  Serial.begin(iPodSerial::IPOD_SERIAL_RATE);
 }
 
 void loop()

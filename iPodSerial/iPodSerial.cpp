@@ -73,11 +73,6 @@ void iPodSerial::setLogPrint(Print &newPrint)
 }
 #endif
 
-void iPodSerial::setup()
-{
-    pSerial->begin(IPOD_SERIAL_RATE);
-}
-
 bool iPodSerial::validChecksum(byte actual)
 {
     int expected = dataSize;

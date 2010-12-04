@@ -51,7 +51,9 @@ void setup()
 {
   nunchuck_setpowerpins();
   nunchuck_init();
-  sr.setup();
+
+  // set the required baud rate for the iPod
+  Serial.begin(iPodSerial::IPOD_SERIAL_RATE);
 }
 
 void loop()

@@ -17,3 +17,5 @@ The AdvancedRemote class implements AAP Mode 4, aka Advanced Remote. Be aware th
 NOTE: When connecting your iPod to your Arduino, please double-check your wiring. iPods are expensive and you don't want to break yours by sending it too high a voltage or whatever. You use this library at your own risk etc.
 
 * On my iPhone 3GS and my wife's iPhone 3G I get the "This accessory is not made to work with iPhone" popup and occasionally the longer error message that asks if you want to put it into Airplane mode. Advanced Mode commands don't work. Simple Remote commands do seem to work fine though.
+
+[blalor] ipodlinux.org is down again; another good protocol reference is at http://www.adriangame.co.uk/ipod-acc-pro.html
