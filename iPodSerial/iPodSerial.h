@@ -35,7 +35,7 @@
 class iPodSerial
 {
 public:
-    static const int IPOD_SERIAL_RATE = 38400;
+    static const unsigned int IPOD_SERIAL_RATE = 38400;
 
     iPodSerial();
 
