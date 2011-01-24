@@ -28,6 +28,7 @@ AdvancedRemote::AdvancedRemote()
     : pListener(0),
       pFeedbackHandler(0),
       piPodNameHandler(0),
+      piPodTypeHandler(0),
       pItemCountHandler(0),
       pItemNameHandler(0),
       pTimeAndStatusHandler(0),
@@ -128,6 +129,14 @@ void AdvancedRemote::disable()
 #endif
     sendCommand(MODE_SWITCHING_MODE, 0x01, SIMPLE_REMOTE_MODE);
     currentlyEnabled = false; // strictly it's not until we get feedback of success
+}
+
+void AdvancedRemote::getiPodType()
+{
+#if defined(IPOD_SERIAL_DEBUG)
+    log(">>> getiPodType");
+#endif
+    sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_IPOD_TYPE);
 }
 
 void AdvancedRemote::getiPodName()
@@ -366,6 +375,14 @@ void AdvancedRemote::processData()
     const byte *pData = &dataBuffer[3];
     switch (commandThisIsAResponseFor)
     {
+    case CMD_GET_IPOD_TYPE:
+        if (pListener) {
+            pListener->handleIPodType((const char *) pData);
+        } else if (piPodTypeHandler) {
+            piPodTypeHandler((const char *) pData);
+        }
+        break;
+
     case CMD_GET_IPOD_NAME:
         if (pListener) {
             pListener->handleIPodName((const char *) pData);

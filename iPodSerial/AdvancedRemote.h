@@ -95,6 +95,7 @@ public: // type definitions
     class AdvancedRemoteListener {
     public:
         virtual void handleFeedback(AdvancedRemote::Feedback feedback, byte cmd) = 0;
+        virtual void handleIPodType(const char *ipodType) = 0;
         virtual void handleIPodName(const char *ipodName) = 0;
         virtual void handleItemCount(unsigned long count) = 0;
         virtual void handleItemName(unsigned long offet, const char *itemName) = 0;
@@ -114,6 +115,7 @@ public: // type definitions
     };
 
     // the internal command types; only useful if you're implementing the Feedback handler
+    static const byte CMD_GET_IPOD_TYPE = 0x12;
     static const byte CMD_GET_IPOD_NAME = 0x14;
     static const byte CMD_SWITCH_TO_MAIN_LIBRARY_PLAYLIST = 0x16;
     static const byte CMD_SWITCH_TO_ITEM = 0x17;
@@ -136,6 +138,7 @@ public: // type definitions
 
     typedef void FeedbackHandler_t(Feedback feedback, byte cmd);
     typedef void iPodNameHandler_t(const char *ipodName);
+    typedef void iPodTypeHandler_t(const char *ipodType);
     typedef void ItemCountHandler_t(unsigned long count);
     typedef void ItemNameHandler_t(unsigned long offet, const char *itemName);
     typedef void TimeAndStatusHandler_t(unsigned long trackLengthInMilliseconds,
@@ -193,6 +196,13 @@ public: // methods
      * own interface again.
      */
     void disable();
+
+    /**
+     * Get the type of the iPod.
+     * The response will be sent to the iPodTypeHandler, if one
+     * has been registered (otherwise it will be ignored).
+     */
+    void getiPodType();
 
     /**
      * Get the name of the iPod.
@@ -360,6 +370,7 @@ private: // attributes
     AdvancedRemoteListener *pListener;
     FeedbackHandler_t *pFeedbackHandler;
     iPodNameHandler_t *piPodNameHandler;
+    iPodTypeHandler_t *piPodTypeHandler;
     ItemCountHandler_t *pItemCountHandler;
     ItemNameHandler_t *pItemNameHandler;
     TimeAndStatusHandler_t *pTimeAndStatusHandler;
