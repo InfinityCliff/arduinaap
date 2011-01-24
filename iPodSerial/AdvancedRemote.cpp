@@ -115,7 +115,7 @@ void AdvancedRemote::setCurrentPlaylistSongCountHandler(CurrentPlaylistSongCount
 void AdvancedRemote::enable()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("enabling advanced remote mode");
+    log(">>> enabling advanced remote mode");
 #endif
     sendCommand(MODE_SWITCHING_MODE, 0x01, ADVANCED_REMOTE_MODE);
     currentlyEnabled = true; // strictly it's not until we get feedback of success
@@ -124,7 +124,7 @@ void AdvancedRemote::enable()
 void AdvancedRemote::disable()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("disabling advanced remote mode");
+    log(">>> disabling advanced remote mode");
 #endif
     sendCommand(MODE_SWITCHING_MODE, 0x01, SIMPLE_REMOTE_MODE);
     currentlyEnabled = false; // strictly it's not until we get feedback of success
@@ -133,7 +133,7 @@ void AdvancedRemote::disable()
 void AdvancedRemote::getiPodName()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getiPodName");
+    log(">>> getiPodName");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_IPOD_NAME);
 }
@@ -141,7 +141,7 @@ void AdvancedRemote::getiPodName()
 void AdvancedRemote::switchToMainLibraryPlaylist()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("switchToMainLibraryPlaylist");
+    log(">>> switchToMainLibraryPlaylist");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_SWITCH_TO_MAIN_LIBRARY_PLAYLIST);
 }
@@ -149,7 +149,7 @@ void AdvancedRemote::switchToMainLibraryPlaylist()
 void AdvancedRemote::switchToItem(AdvancedRemote::ItemType itemType, long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("switchToItem");
+    log(">>> switchToItem");
 #endif
     sendCommandWithOneByteAndOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_SWITCH_TO_ITEM, itemType, index);
 }
@@ -157,7 +157,7 @@ void AdvancedRemote::switchToItem(AdvancedRemote::ItemType itemType, long index)
 void AdvancedRemote::getItemCount(AdvancedRemote::ItemType itemType)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getItemCount");
+    log(">>> getItemCount");
 #endif
     sendCommandWithOneByteParam(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_ITEM_COUNT, itemType);
 }
@@ -165,7 +165,7 @@ void AdvancedRemote::getItemCount(AdvancedRemote::ItemType itemType)
 void AdvancedRemote::getItemNames(AdvancedRemote::ItemType itemType, unsigned long offset, unsigned long count)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getItemNames");
+    log(">>> getItemNames");
 #endif
     sendCommandWithOneByteAndTwoNumberParams(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_ITEM_NAMES, itemType, offset, count);
 }
@@ -173,7 +173,7 @@ void AdvancedRemote::getItemNames(AdvancedRemote::ItemType itemType, unsigned lo
 void AdvancedRemote::getTimeAndStatusInfo()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getTimeAndStatusInfo");
+    log(">>> getTimeAndStatusInfo");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_TIME_AND_STATUS_INFO);
 }
@@ -181,7 +181,7 @@ void AdvancedRemote::getTimeAndStatusInfo()
 void AdvancedRemote::getPlaylistPosition()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getPlaylistPosition");
+    log(">>> getPlaylistPosition");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_PLAYLIST_POSITION);
 }
@@ -189,7 +189,7 @@ void AdvancedRemote::getPlaylistPosition()
 void AdvancedRemote::getTitle(unsigned long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getTitle");
+    log(">>> getTitle");
 #endif
     sendCommandWithOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_TITLE, index);
 }
@@ -197,7 +197,7 @@ void AdvancedRemote::getTitle(unsigned long index)
 void AdvancedRemote::getArtist(unsigned long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getArtist");
+    log(">>> getArtist");
 #endif
     sendCommandWithOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_ARTIST, index);
 }
@@ -205,7 +205,7 @@ void AdvancedRemote::getArtist(unsigned long index)
 void AdvancedRemote::getAlbum(unsigned long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getAlbum");
+    log(">>> getAlbum");
 #endif
     sendCommandWithOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_ALBUM, index);
 }
@@ -213,7 +213,7 @@ void AdvancedRemote::getAlbum(unsigned long index)
 void AdvancedRemote::setPollingMode(AdvancedRemote::PollingMode newMode)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("setPollingMode");
+    log(">>> setPollingMode");
 #endif
     sendCommandWithOneByteParam(ADVANCED_REMOTE_MODE, 0x00, CMD_POLLING_MODE, newMode);
 }
@@ -221,7 +221,7 @@ void AdvancedRemote::setPollingMode(AdvancedRemote::PollingMode newMode)
 void AdvancedRemote::executeSwitch(unsigned long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("executeSwitch");
+    log(">>> executeSwitch");
 #endif
     sendCommandWithOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_EXECUTE_SWITCH, index);
 }
@@ -229,7 +229,7 @@ void AdvancedRemote::executeSwitch(unsigned long index)
 void AdvancedRemote::controlPlayback(AdvancedRemote::PlaybackControl command)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("controlPlayback");
+    log(">>> controlPlayback");
 #endif
     sendCommandWithOneByteParam(ADVANCED_REMOTE_MODE, 0x00, CMD_PLAYBACK_CONTROL, command);
 }
@@ -237,7 +237,7 @@ void AdvancedRemote::controlPlayback(AdvancedRemote::PlaybackControl command)
 void AdvancedRemote::getShuffleMode()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getShuffleMode");
+    log(">>> getShuffleMode");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_SHUFFLE_MODE);
 }
@@ -245,7 +245,7 @@ void AdvancedRemote::getShuffleMode()
 void AdvancedRemote::setShuffleMode(AdvancedRemote::ShuffleMode newMode)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("setShuffleMode");
+    log(">>> setShuffleMode");
 #endif
     sendCommandWithOneByteParam(ADVANCED_REMOTE_MODE, 0x00, CMD_SET_SHUFFLE_MODE, newMode);
 }
@@ -253,7 +253,7 @@ void AdvancedRemote::setShuffleMode(AdvancedRemote::ShuffleMode newMode)
 void AdvancedRemote::getRepeatMode()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getRepeatMode");
+    log(">>> getRepeatMode");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_REPEAT_MODE);
 }
@@ -261,7 +261,7 @@ void AdvancedRemote::getRepeatMode()
 void AdvancedRemote::setRepeatMode(AdvancedRemote::RepeatMode newMode)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("setRepeatMode");
+    log(">>> setRepeatMode");
 #endif
     sendCommandWithOneByteParam(ADVANCED_REMOTE_MODE, 0x00, CMD_SET_REPEAT_MODE, newMode);
 }
@@ -269,7 +269,7 @@ void AdvancedRemote::setRepeatMode(AdvancedRemote::RepeatMode newMode)
 void AdvancedRemote::getSongCountInCurrentPlaylist()
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("getSongCountInCurrentPlaylist");
+    log(">>> getSongCountInCurrentPlaylist");
 #endif
     sendCommand(ADVANCED_REMOTE_MODE, 0x00, CMD_GET_SONG_COUNT_IN_CURRENT_PLAYLIST);
 }
@@ -277,7 +277,7 @@ void AdvancedRemote::getSongCountInCurrentPlaylist()
 void AdvancedRemote::jumpToSongInCurrentPlaylist(unsigned long index)
 {
 #if defined(IPOD_SERIAL_DEBUG)
-    log("jumpToSongInCurrentPlaylist");
+    log(">>> jumpToSongInCurrentPlaylist");
 #endif
     sendCommandWithOneNumberParam(ADVANCED_REMOTE_MODE, 0x00, CMD_JUMP_TO_SONG_IN_CURRENT_PLAYLIST, index);
 }

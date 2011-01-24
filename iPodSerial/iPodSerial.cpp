@@ -92,7 +92,7 @@ bool iPodSerial::validChecksum(byte actual)
 #if defined(IPOD_SERIAL_DEBUG)
         if (pDebugPrint)
         {
-            pDebugPrint->print("checksum mismatch: expected ");
+            pDebugPrint->print("*** checksum mismatch: expected ");
             pDebugPrint->print(expected, HEX);
             pDebugPrint->print(" but got ");
             pDebugPrint->println(actual, HEX);
