@@ -299,7 +299,8 @@ void AdvancedRemote::processData()
 #if defined(IPOD_SERIAL_DEBUG)
         if (pDebugPrint)
         {
-            pDebugPrint->println("response not for adv mode so ignoring");
+            pDebugPrint->print("response not for adv mode so ignoring; ");
+            pDebugPrint->println(mode, HEX);
             dumpReceive();
         }
 #endif
