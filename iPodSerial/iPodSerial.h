@@ -1,5 +1,6 @@
 #ifndef IPOD_SERIAL
 #define IPOD_SERIAL
+// #define IPOD_SERIAL_DEBUG
 /*******************************************************************************
  * Copyright (c) 2009 David Findlay
  * All rights reserved.
