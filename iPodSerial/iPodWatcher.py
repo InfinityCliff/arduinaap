@@ -147,6 +147,10 @@ COMMANDS = {
         (0x01, 0x02) : ("Switch to simple", None),
         (0x01, 0x04) : ("Switch to advanced", None),
     },
+    0x02 : {
+        (0x00, 0x00)       : ("Button released", None),
+        (0x00, 0x00, 0x02) : ("Pause", None),
+    },
     0x04 : {
         (0x00, 0x01) : ("Result", lambda x: '%s, result %s' % (COMMANDS[0x04][(ord(x[1]), ord(x[2]))][0], FEEDBACK_RESULT[ord(x[0])])),
         (0x00, 0x12) : ("Get iPod type", None),
@@ -222,7 +226,7 @@ class Decoder(threading.Thread):
         last_packet_rx_ts = None
         delta_ts = None
         
-        ser = serial.Serial(port = self.__port, baudrate = 38400, timeout = 1)
+        ser = serial.Serial(port = self.__port, baudrate = 19200, timeout = 1)
         try:
             while not self.__stopped:
                 byte_read = ser.read()
@@ -276,10 +280,17 @@ class Decoder(threading.Thread):
                             if mode in MODE_MAP:
                                 mode_name = MODE_MAP[mode]
                             
-                            command = tuple([ord(c) for c in packet[4:6]])
+                            if mode == 0x02:
+                                command = tuple([ord(c) for c in packet[4:-1]])
+                            else:
+                                command = tuple([ord(c) for c in packet[4:6]])
+                            
                             command_name = None
-                            if mode_name and (command in COMMANDS[mode]):
-                                command_name, param_decoder = COMMANDS[mode][command]
+                            try:
+                                if mode_name and (command in COMMANDS[mode]):
+                                    command_name, param_decoder = COMMANDS[mode][command]
+                            except KeyError:
+                                command_name = "unknown " + mode_name + " command"
                             
                             parameter = packet[6:-1]
                             if param_decoder:
